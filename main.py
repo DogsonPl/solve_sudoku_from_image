@@ -177,4 +177,3 @@ if __name__ == '__main__':
         input()
         sys.exit()
     write_solution_on_photo(path_to_file, old_board, sudoku_board)
-
