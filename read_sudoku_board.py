@@ -12,8 +12,7 @@ pytesseract.pytesseract.tesseract_cmd = "C://Program Files//Tesseract-OCR//tesse
 
 class ReadSudokuBoardImage:
     def __init__(self, path_to_file):
-        print("""Note: if image is bad quality or is small size, program can read wrong numbers 
-On image should be only sudoku without background""")
+        print("Note: if image is bad quality or is small size, program can read wrong numbers")
         self.reading_image = True
         self.progress = 0
         threading.Thread(target=self.loading_progress_bar, daemon=True).start()
@@ -23,6 +22,8 @@ On image should be only sudoku without background""")
         try:
             self.resized_sudoku_board_image = cv2.resize(self.sudoku_board_image, (900, 900))
         except cv2.error:
+            self.reading_image = False
+            time.sleep(0.2)
             input("Wrong file. Click enter to exit program")
             sys.exit()
 
