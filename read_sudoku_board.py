@@ -1,9 +1,10 @@
+import threading
+import sys
 import webbrowser
 import time
+
 import numpy as np
-import threading
 import pytesseract
-import sys
 from cv2 import cv2
 
 
@@ -12,7 +13,7 @@ pytesseract.pytesseract.tesseract_cmd = "C://Program Files//Tesseract-OCR//tesse
 
 class ReadSudokuBoardImage:
     def __init__(self, path_to_file):
-        print("Note: if image is bad quality or is small size, program can read wrong numbers")
+        print("Note: if image is in bad quality or is small, program can read wrong numbers")
         self.reading_image = True
         self.progress = 0
         threading.Thread(target=self.loading_progress_bar, daemon=True).start()
@@ -24,7 +25,7 @@ class ReadSudokuBoardImage:
         except cv2.error:
             self.reading_image = False
             time.sleep(0.2)
-            input("Wrong file. Click enter to exit program")
+            input("Incompatible file extension. Click enter to exit program")
             sys.exit()
 
     def loading_progress_bar(self):
@@ -45,12 +46,12 @@ class ReadSudokuBoardImage:
                                                       config="--psm 6 --oem 1 -c tessedit_char_whitelist=0123456789")
                 except pytesseract.pytesseract.TesseractNotFoundError:
                     self.on_tesseract_not_found_error()
-                    break
-                if num:
-                    try:
-                        self.sudoku_board[i][j] = num
-                    except ValueError:
-                        pass
+                else:
+                    if num:
+                        try:
+                            self.sudoku_board[i][j] = num
+                        except ValueError:
+                            pass
 
         self.reading_image = False
         return self.sudoku_board
